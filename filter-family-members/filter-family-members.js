@@ -2,9 +2,6 @@
 // returns an array, in any order, of the full names of family members who pass the passed in truth test.
 // You will need to use recursion in your solution in order to handle nested family trees.
 //
-//in: 2 obj, test
-// out: array
-//
 // A family member looks like this:
 //
 // {
@@ -13,10 +10,17 @@
 //   location: 'San Francsico'
 //   children: [/* ... */]
 // }
-//
+
 // EXAMPLE:
 
-var familyTree = {'firstName': 'Beth','lastName': 'Johnson','location': 'San Francisco','children': [{'firstName': 'Beth Jr.','lastName': 'Johnson',
+var familyTree = {
+  'firstName': 'Beth',
+  'lastName': 'Johnson',
+  'location': 'San Francisco',
+  'children': [
+    {
+      'firstName': 'Beth Jr.',
+      'lastName': 'Johnson',
       'location': 'Berkeley',
       'children': [
         {
@@ -35,53 +39,34 @@ var familyTree = {'firstName': 'Beth','lastName': 'Johnson','location': 'San Fra
     }
   ]
 };
-//
-// var livesInBerkeley = function (familyMember) {
-//   return familyMember.location === 'Berkeley';
-// }
-//
-// filterFamilyMembers(familyTree, livesInBerkeley)
+
+
 //
 // returns ['Beth Jr. Johnson', 'Joshie Wyattson'];
 
-//console.log(familyTree.children);
 
-var truthTest = function(member){
-	//var arr = [];
-	//console.log(member);
-	
-	for(var key in member){
-
-	}
-    if(typeof member=== 'object'){
-    	//console.log('hi')
-    	truthTest(member.children);
-    }
-
-
-	return member.location === 'Berkeley';
-};
 
 var filterFamilyMembers = function (familyTree, truthTest) {
   // All your code in this function body
+  //in: 2 (obj, func)
+  //out: array
+  var arr = [];
 
-  // return familyTree.filter(function(el){
-  // 	console.log(el);
-  // 	return truthTest(el);
-  // });
-	for(var key in familyTree){
+  var member = function(fm,t){
+  if(t(fm)){arr.push(fm.firstName + ' ' + fm.lastName);}
+  if(fm.children){
+    fm.children.forEach(function(child){
+       member(child, t);
+    });
+  }
+};  member(familyTree,truthTest);
 
-	var arr = [];
-	if(key==='children'){
-				console.log(familyTree[key]);
-
-	if(truthTest(familyTree[key])){
-
-		arr.push(familyTree[key].firstName)
-		
-	}
-}
-}
-	return arr;
+  return arr;
 };
-console.log(filterFamilyMembers(familyTree, truthTest));
+
+
+var livesInBerkeley = function (familyMember) {
+  return familyMember.location === 'Berkeley';
+}
+
+console.log(filterFamilyMembers(familyTree, livesInBerkeley));
